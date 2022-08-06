@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 export default function App() {
     const [books, setBooks] = useState([]);
+    const [order, setOrder] = useState(true);
 
     useEffect(() => {
         const url = 'https://localhost:7200/api/books';
@@ -35,13 +36,28 @@ export default function App() {
             });
     }
 
+    function sorting(col) {
+        if (order === true) {
+            const sortedBooks = [...books].sort((a, b) =>
+                a[col] > b[col] ? 1 : -1
+            );
+
+            setBooks(sortedBooks);
+            setOrder(false);
+        }
+        if (order === false) {
+            const sortedBooks = [...books].sort((a, b) =>
+                a[col] < b[col] ? 1 : -1
+            );
+
+            setBooks(sortedBooks);
+            setOrder(true);
+        }
+    }
+
     return (
         <div className="container">
-            <div className="row min-vh-100">
-                <div className="col d-flex flex-column justify-content-center align-items-center">
-                    {renderPostsTable()}
-                </div>
-            </div>
+            {renderPostsTable()}
         </div>
     );
 
@@ -50,10 +66,10 @@ export default function App() {
             <table className="table table-bordered text-center">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Название</th>
-                        <th scope="col">Автор</th>
-                        <th scope="col">Год публикации</th>
+                        <th onClick={() => sorting('id')} scope="col">#</th>
+                        <th onClick={() => sorting('title')} scope="col">Название</th>
+                        <th onClick={() => sorting('author')} scope="col">Автор</th>
+                        <th onClick={() => sorting('publishYear')} scope="col">Год публикации</th>
                         <th scope="col">Купить</th>
                     </tr>
                 </thead>

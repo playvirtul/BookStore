@@ -6,6 +6,9 @@ namespace BookStore.API.Contracts
     public class GetBookResponse
     {
         [Required]
+        public int Id { get; set; }
+
+        [Required]
         [MaxLength(Book.MAX_AUTHOR_LENGTH)]
         public string Author { get; set; }
 
